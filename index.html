@@ -531,6 +531,7 @@ header.top .wrap{position:relative}
 .langm button:hover,.langm button:focus-visible{background:#2a241c}
 .langm button[aria-current="true"]{color:var(--gold-hi)}
 .langm button[aria-current="true"]::after{content:"✓";margin-left:auto;color:var(--gold)}
+html:not(.mob) nav.tabs .wrap{flex-wrap:wrap;overflow:visible}
 html.mob .lang{position:absolute;right:max(10px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);margin:0}
 html.mob .langb{padding:5px 7px}
 html.mob .langb .code{display:none}
