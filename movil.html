@@ -1402,7 +1402,7 @@ function viewClase(k){
   ${sh("Cartas de capacidad","cards")}
   <div class="lvbar">${lvs.map(l=>`<button class="gbtn sm ${String(state.lv)===String(l)?"on":""}" data-lv="${l}">${l==="todos"?"Todas":l==="M"?"Botiquín":l}</button>`).join("")}<span class="count" style="align-self:center">${cards.length} cartas · anillo brillante = recomendada</span></div>
   <div class="deckarea">
-   <div class="cardlist" role="list">${cards.map(x=>`<button class="cl ${rec.has(x.n)?"rec":""} ${x.tl||x.bl?"lost":""}" style="--c:${col(k)}" data-card="c${x.id}" role="listitem"><span class="ini">${x.ini}</span><span>${esc(cardName(x.n))}</span></button>`).join("")}</div>
+   <div class="cardlist" role="list">${cards.map(x=>`<button class="cl ${rec.has(x.n)?"rec":""} ${(x.tl||x.bl||[...x.top,...x.bot].some(l=>/class="k l"/.test(l)))?"lost":""}" style="--c:${col(k)}" data-card="c${x.id}" role="listitem"><span class="ini">${x.ini}</span><span>${esc(cardName(x.n))}</span></button>`).join("")}</div>
    <div class="cards">${cards.map(x=>cardHTML(x,k)).join("")}</div>
   </div>`;
 }
@@ -1627,6 +1627,7 @@ function makeQuestion(k,x,pool,mode){
   for(const src of [shuf(pool),shuf(all)]) for(const y of src){if(opts.length>=4)break;const v=val(y);if(y.id!==x.id&&!seen.has(v)){seen.add(v);opts.push(y)}}
   return {x,mode,opts:shuf(opts),ans:null};
 }
+const cardLost=x=>!!(x.tl||x.bl||[...x.top,...x.bot].some(l=>/class="k l"/.test(l)));
 const EFFECTS = [
  ["cura","curan","Curación",t=>/curaci[oó]n/i.test(t)],
  ["represalia","dan Represalia","Represalia",t=>/represalia/i.test(t)],
@@ -1652,7 +1653,7 @@ const EFFECTS = [
  ["recupera","recuperan o renuevan cartas u objetos","Recuperar / Renovar",t=>/recupera|renuev/i.test(t)],
  ["mata","matan directamente a un enemigo","Matar",t=>/\bmata\b/i.test(t)],
  ["persistente","tienen un efecto persistente","Persistente",t=>/persistente/i.test(t)],
- ["perdida","son de pérdida en alguna mitad","Pérdida",(t,x)=>x.tl||x.bl],
+ ["perdida","son de pérdida en alguna mitad","Pérdida",(t,x)=>cardLost(x)],
  ["genera","generan un elemento","Generar elemento",t=>/genera/i.test(t)],
  ["consume","consumen un elemento","Consumir elemento",t=>/consume/i.test(t)]
 ];
